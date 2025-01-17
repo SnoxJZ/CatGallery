@@ -35,11 +35,11 @@
     "vite": "^6.0.5"
   },
   "lint-staged": {
-    "**/*.{js,ts,tsx}": [
+    "src/**/*.{js,ts,tsx}": [
       "prettier --write",
       "eslint"
     ],
-    "**/*.{json,yaml,yml,toml}": [
+    "src/**/*.{json,yaml,yml,toml}": [
       "prettier --write"
     ]
   }
