@@ -1,4 +1,4 @@
-import { infiniteQueryOptions } from '@tanstack/react-query';
+import { infiniteQueryOptions, queryOptions } from '@tanstack/react-query';
 import { jsonApiInstance } from '../../shared/api/apiInstance.ts';
 
 export interface IBreeds {
@@ -13,12 +13,12 @@ export interface ICat {
 }
 
 export const catListApi = {
-  getCatListInfiniteQueryOptions: () => {
+  getCatListInfiniteQueryOptions: ({ breed }: { breed?: string }) => {
     return infiniteQueryOptions({
-      queryKey: ['cats', 'list'],
+      queryKey: ['cats', 'list', breed],
       queryFn: (meta) =>
         jsonApiInstance<ICat[]>(
-          `images/search?page=${meta.pageParam}&limit=10&has_breeds=1`,
+          `images/search?page=${meta.pageParam}${breed ? `&breed_ids=${breed}&order=ASC` : '&has_breeds=1'}&limit=10`,
           {
             signal: meta.signal,
           },
@@ -41,6 +41,23 @@ export const catListApi = {
             };
           }),
         ),
+    });
+  },
+
+  getCatBreedsListQueryOptions: () => {
+    return queryOptions({
+      queryKey: ['breeds'],
+      queryFn: (meta) =>
+        jsonApiInstance<IBreeds[]>(`breeds`, {
+          signal: meta.signal,
+        }),
+      select: (data) =>
+        data.map((breed) => {
+          return {
+            breedId: breed.id,
+            breedName: breed.name,
+          };
+        }),
     });
   },
 };

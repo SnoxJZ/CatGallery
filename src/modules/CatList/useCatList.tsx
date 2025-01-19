@@ -2,8 +2,11 @@ import { useInfiniteQuery } from '@tanstack/react-query';
 import { catListApi } from './api.ts';
 import { useIntersection } from '../../shared/hooks/useIntersection.ts';
 import Spinner from '../../shared/ui/Spinner.tsx';
+import { useBreedStore } from '../../shared/store/store.ts';
 
 export const useCatList = () => {
+  const breed = useBreedStore((state) => state.breed);
+
   const {
     data,
     error,
@@ -12,7 +15,7 @@ export const useCatList = () => {
     hasNextPage,
     isFetchingNextPage,
   } = useInfiniteQuery({
-    ...catListApi.getCatListInfiniteQueryOptions(),
+    ...catListApi.getCatListInfiniteQueryOptions({ breed: breed }),
   });
 
   const cursorRef = useIntersection(() => {
@@ -20,8 +23,10 @@ export const useCatList = () => {
   });
 
   const cursor = (
-    <div ref={cursorRef} className="flex justify-center items-center">
-      {!hasNextPage && <div>End of list</div>}
+    <div ref={cursorRef} className="flex justify-center items-center mt-4">
+      {!hasNextPage && !isLoading && (
+        <div className="text-xl">No more cats available.</div>
+      )}
       {isFetchingNextPage && <Spinner />}
     </div>
   );
