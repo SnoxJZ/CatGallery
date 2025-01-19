@@ -24,11 +24,6 @@
 
     /* Alias */
     "baseUrl": "src",
-    "paths": {
-      "@/layout/*": ["components/layout/*"],
-      "@/ui/*": ["components/ui/*"],
-      "@/*": ["./*"]
-    }
   },
   "include": ["src"]
 }
