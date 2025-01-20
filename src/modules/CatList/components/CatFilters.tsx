@@ -4,6 +4,7 @@ import { useBreedStore, useFavCats } from '../../../shared/store/store.ts';
 import React from 'react';
 
 import paws from '../../../assets/paw.png';
+import Select from '../../../shared/ui/Select.tsx';
 
 const CatFilters = () => {
   const { breeds, breedError, isLoadingBreeds } = useBreedList();
@@ -16,6 +17,7 @@ const CatFilters = () => {
 
   const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setBreed(e.target.value);
+    setFavoriteActive(false);
   };
 
   const btnStyles =
@@ -29,16 +31,14 @@ const CatFilters = () => {
           <Spinner />
         </div>
       ) : (
-        <select
-          name="breeds"
+        <Select
           id="breeds"
-          className="w-full md:w-1/3 block px-4 py-2 text-sm text-gray-700 border border-gray-300 rounded-lg shadow-sm focus:ring focus:ring-blue-200 focus:border-blue-500"
-          onChange={handleChange}
+          name="breeds"
           value={breed}
+          onChange={handleChange}
+          errorMessage={breedError ? breedError.message : ''}
+          defaultOptionText="All Breeds"
         >
-          <option value="" className="bg-gray-100 text-gray-700">
-            {breedError ? breedError.message : 'All Breeds'}
-          </option>
           {breeds?.map((breed) => {
             return (
               <option
@@ -50,7 +50,7 @@ const CatFilters = () => {
               </option>
             );
           })}
-        </select>
+        </Select>
       )}
       <div className="w-full md:w-auto flex">
         <button

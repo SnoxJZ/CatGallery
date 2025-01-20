@@ -17,6 +17,7 @@ const CatItem = (cat: ICatItem) => {
       <div className="mt-3 flex justify-between items-center">
         <p className="text-xl text-gray-800 font-bold">{cat.catName}</p>
         <FontAwesomeIcon
+          tabIndex={0}
           icon={faHeart}
           color={isLiked(cat.imgId) ? 'red' : 'grey'}
           className="cursor-pointer transition-colors duration-200"
